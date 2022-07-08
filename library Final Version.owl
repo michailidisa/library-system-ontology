@@ -1,0 +1,1183 @@
+@prefix : <http://example.org/library#> .
+@prefix lib: <http://example.org/library#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@base <http://example.org/library> .
+
+<http://example.org/library> rdf:type owl:Ontology ;
+                              spin:imports <http://topbraid.org/spin/rdfsplus> ;
+                              owl:versionInfo "Created with TopBraid Composer" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://example.org/library#wDateOfBirth
+lib:wDateOfBirth rdf:type owl:AnnotationProperty .
+
+
+###  http://spinrdf.org/spin#imports
+spin:imports rdf:type owl:AnnotationProperty .
+
+
+###  http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled
+<http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://example.org/library#deptHasAcademicStaff
+lib:deptHasAcademicStaff rdf:type owl:ObjectProperty ;
+                         owl:inverseOf lib:pAcWorkOnDept .
+
+
+###  http://example.org/library#deptHasStudents
+lib:deptHasStudents rdf:type owl:ObjectProperty ;
+                    owl:inverseOf lib:pStudBelongToDept .
+
+
+###  http://example.org/library#hasCopy
+lib:hasCopy rdf:type owl:ObjectProperty ;
+            owl:inverseOf lib:isCopyOf ;
+            rdfs:domain lib:Document ;
+            rdfs:range lib:Copy .
+
+
+###  http://example.org/library#isCopyOf
+lib:isCopyOf rdf:type owl:ObjectProperty ,
+                      owl:FunctionalProperty .
+
+
+###  http://example.org/library#isWrittenBy
+lib:isWrittenBy rdf:type owl:ObjectProperty ;
+                owl:inverseOf lib:wrote ;
+                rdfs:domain lib:Document ;
+                rdfs:range lib:Author .
+
+
+###  http://example.org/library#pAcMayHaveStudent
+lib:pAcMayHaveStudent rdf:type owl:ObjectProperty ;
+                      owl:inverseOf lib:pStudMayHaveTeacher .
+
+
+###  http://example.org/library#pAcWorkOnDept
+lib:pAcWorkOnDept rdf:type owl:ObjectProperty ,
+                           owl:FunctionalProperty ;
+                  rdfs:domain lib:AcademicStaff ;
+                  rdfs:range lib:Department .
+
+
+###  http://example.org/library#pAddHasDirectSupervisor
+lib:pAddHasDirectSupervisor rdf:type owl:ObjectProperty ;
+                            rdfs:subPropertyOf lib:pAddHasSupervisor .
+
+
+###  http://example.org/library#pAddHasSupervisor
+lib:pAddHasSupervisor rdf:type owl:ObjectProperty ,
+                               owl:TransitiveProperty ;
+                      rdfs:domain lib:AdministrativeStaff ;
+                      rdfs:range lib:AdministrativeStaff .
+
+
+###  http://example.org/library#pHasGender
+lib:pHasGender rdf:type owl:ObjectProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain lib:Person ;
+               rdfs:range lib:Gender .
+
+
+###  http://example.org/library#pStudBelongToDept
+lib:pStudBelongToDept rdf:type owl:ObjectProperty ;
+                      rdfs:domain lib:Student ;
+                      rdfs:range lib:Department .
+
+
+###  http://example.org/library#pStudMayHaveTeacher
+lib:pStudMayHaveTeacher rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf owl:topObjectProperty ;
+                        owl:propertyChainAxiom ( lib:pStudBelongToDept
+                                                 lib:deptHasAcademicStaff
+                                               ) .
+
+
+###  http://example.org/library#transCopyLoaned
+lib:transCopyLoaned rdf:type owl:ObjectProperty ;
+                    rdfs:domain lib:Loan ;
+                    rdfs:range lib:Copy .
+
+
+###  http://example.org/library#transCopyReserved
+lib:transCopyReserved rdf:type owl:ObjectProperty ;
+                      rdfs:domain lib:Reservation ;
+                      rdfs:range lib:Copy .
+
+
+###  http://example.org/library#transFromLoan
+lib:transFromLoan rdf:type owl:ObjectProperty ;
+                  rdfs:domain lib:Return ;
+                  rdfs:range lib:Loan .
+
+
+###  http://example.org/library#transFromReserve
+lib:transFromReserve rdf:type owl:ObjectProperty ;
+                     rdfs:domain lib:Loan ;
+                     rdfs:range lib:Reservation .
+
+
+###  http://example.org/library#transIsLoanedBy
+lib:transIsLoanedBy rdf:type owl:ObjectProperty ;
+                    owl:inverseOf lib:transLoans ;
+                    rdfs:domain lib:Loan ;
+                    rdfs:range lib:User .
+
+
+###  http://example.org/library#transIsReservedBy
+lib:transIsReservedBy rdf:type owl:ObjectProperty ;
+                      owl:inverseOf lib:transReserves ;
+                      rdfs:domain lib:Reservation ;
+                      rdfs:range lib:User .
+
+
+###  http://example.org/library#transLoans
+lib:transLoans rdf:type owl:ObjectProperty .
+
+
+###  http://example.org/library#transRegisteredFrom
+lib:transRegisteredFrom rdf:type owl:ObjectProperty ;
+                        owl:inverseOf lib:transRegisters ;
+                        rdfs:domain lib:Transaction ;
+                        rdfs:range lib:AdministrativeStaff .
+
+
+###  http://example.org/library#transRegisters
+lib:transRegisters rdf:type owl:ObjectProperty .
+
+
+###  http://example.org/library#transReserves
+lib:transReserves rdf:type owl:ObjectProperty .
+
+
+###  http://example.org/library#workedWith
+lib:workedWith rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf owl:topObjectProperty ;
+               rdfs:domain lib:Author ;
+               rdfs:range lib:Author .
+
+
+###  http://example.org/library#wrote
+lib:wrote rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://example.org/library#cAcHasWorkingAddress
+lib:cAcHasWorkingAddress rdf:type owl:DatatypeProperty ;
+                         rdfs:subPropertyOf owl:topDataProperty ;
+                         rdfs:domain lib:AcademicStaff ;
+                         rdfs:range xsd:string .
+
+
+###  http://example.org/library#cId
+lib:cId rdf:type owl:DatatypeProperty ,
+                 owl:FunctionalProperty ;
+        rdfs:domain lib:Copy ;
+        rdfs:range xsd:integer .
+
+
+###  http://example.org/library#cNetPrice
+lib:cNetPrice rdf:type owl:DatatypeProperty ;
+              rdfs:subPropertyOf owl:topDataProperty ;
+              rdfs:domain lib:Copy ;
+              rdfs:range xsd:integer .
+
+
+###  http://example.org/library#cPrice
+lib:cPrice rdf:type owl:DatatypeProperty ;
+           rdfs:domain lib:Copy ;
+           rdfs:range xsd:decimal .
+
+
+###  http://example.org/library#cPurDate
+lib:cPurDate rdf:type owl:DatatypeProperty ;
+             rdfs:domain lib:Copy ;
+             rdfs:range xsd:date .
+
+
+###  http://example.org/library#dAddress
+lib:dAddress rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf owl:topDataProperty ;
+             rdfs:domain lib:Department ;
+             rdfs:range xsd:string .
+
+
+###  http://example.org/library#dEdition
+lib:dEdition rdf:type owl:DatatypeProperty ;
+             rdfs:domain lib:Document ;
+             rdfs:range xsd:integer .
+
+
+###  http://example.org/library#dGenre
+lib:dGenre rdf:type owl:DatatypeProperty ;
+           rdfs:domain lib:Document ;
+           rdfs:range xsd:string .
+
+
+###  http://example.org/library#dIsbn
+lib:dIsbn rdf:type owl:DatatypeProperty ,
+                   owl:FunctionalProperty ;
+          rdfs:domain lib:Document ;
+          rdfs:range xsd:integer .
+
+
+###  http://example.org/library#dNoPages
+lib:dNoPages rdf:type owl:DatatypeProperty ;
+             rdfs:domain lib:Document ;
+             rdfs:range xsd:integer .
+
+
+###  http://example.org/library#dPaperJournal
+lib:dPaperJournal rdf:type owl:DatatypeProperty ;
+                  rdfs:domain lib:Paper ;
+                  rdfs:range xsd:string .
+
+
+###  http://example.org/library#dPubDate
+lib:dPubDate rdf:type owl:DatatypeProperty ;
+             rdfs:domain lib:Document ;
+             rdfs:range xsd:date .
+
+
+###  http://example.org/library#dTitle
+lib:dTitle rdf:type owl:DatatypeProperty ;
+           rdfs:domain lib:Document ;
+           rdfs:range xsd:string .
+
+
+###  http://example.org/library#pAcRegNo
+lib:pAcRegNo rdf:type owl:DatatypeProperty ,
+                      owl:FunctionalProperty ;
+             rdfs:domain lib:AcademicStaff ;
+             rdfs:range xsd:integer .
+
+
+###  http://example.org/library#pAuthorCountryOrigin
+lib:pAuthorCountryOrigin rdf:type owl:DatatypeProperty ;
+                         rdfs:domain lib:Author ;
+                         rdfs:range xsd:string .
+
+
+###  http://example.org/library#pAuthorDateOfDeath
+lib:pAuthorDateOfDeath rdf:type owl:DatatypeProperty ;
+                       rdfs:domain lib:Author ;
+                       rdfs:range xsd:date .
+
+
+###  http://example.org/library#pAuthorId
+lib:pAuthorId rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:domain lib:Author ;
+              rdfs:range xsd:integer .
+
+
+###  http://example.org/library#pDateOfBirth
+lib:pDateOfBirth rdf:type owl:DatatypeProperty ;
+                 rdfs:domain [ rdf:type owl:Class ;
+                               owl:unionOf ( lib:AdministrativeStaff
+                                             lib:Author
+                                             lib:User
+                                           )
+                             ] ;
+                 rdfs:range xsd:date .
+
+
+###  http://example.org/library#pEmail
+lib:pEmail rdf:type owl:DatatypeProperty ;
+           rdfs:domain [ rdf:type owl:Class ;
+                         owl:unionOf ( lib:AdministrativeStaff
+                                       lib:Author
+                                       lib:User
+                                     )
+                       ] ;
+           rdfs:range xsd:string .
+
+
+###  http://example.org/library#pExtHasAddress
+lib:pExtHasAddress rdf:type owl:DatatypeProperty ;
+                   rdfs:domain lib:External ;
+                   rdfs:range xsd:string .
+
+
+###  http://example.org/library#pExtId
+lib:pExtId rdf:type owl:DatatypeProperty ,
+                    owl:FunctionalProperty ;
+           rdfs:domain lib:External ;
+           rdfs:range xsd:integer .
+
+
+###  http://example.org/library#pFullName
+lib:pFullName rdf:type owl:DatatypeProperty ;
+              rdfs:domain [ rdf:type owl:Class ;
+                            owl:unionOf ( lib:AdministrativeStaff
+                                          lib:Author
+                                          lib:User
+                                        )
+                          ] ;
+              rdfs:range xsd:string .
+
+
+###  http://example.org/library#pStudRegNo
+lib:pStudRegNo rdf:type owl:DatatypeProperty ;
+               rdfs:domain lib:Student ;
+               rdfs:range xsd:string .
+
+
+###  http://example.org/library#pTelNo
+lib:pTelNo rdf:type owl:DatatypeProperty ;
+           rdfs:domain [ rdf:type owl:Class ;
+                         owl:unionOf ( lib:AdministrativeStaff
+                                       lib:Author
+                                       lib:User
+                                     )
+                       ] ;
+           rdfs:range xsd:integer .
+
+
+###  http://example.org/library#transDate
+lib:transDate rdf:type owl:DatatypeProperty ;
+              rdfs:domain lib:Transaction ;
+              rdfs:range xsd:date .
+
+
+###  http://example.org/library#transLoanIsOverdue
+lib:transLoanIsOverdue rdf:type owl:DatatypeProperty ;
+                       rdfs:domain lib:Loan ;
+                       rdfs:range xsd:boolean .
+
+
+###  http://example.org/library#transLoanUpToDate
+lib:transLoanUpToDate rdf:type owl:DatatypeProperty ;
+                      rdfs:domain lib:Loan ;
+                      rdfs:range xsd:date .
+
+
+###  http://example.org/library#transResIsOverdue
+lib:transResIsOverdue rdf:type owl:DatatypeProperty ;
+                      rdfs:domain lib:Reservation ;
+                      rdfs:range xsd:boolean .
+
+
+###  http://example.org/library#transResUpToDate
+lib:transResUpToDate rdf:type owl:DatatypeProperty ;
+                     rdfs:domain lib:Reservation ;
+                     rdfs:range xsd:date .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://example.org/library#AcademicStaff
+lib:AcademicStaff rdf:type owl:Class ;
+                  owl:equivalentClass lib:Faculty ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty lib:pAcWorkOnDept ;
+                                        owl:someValuesFrom lib:Department
+                                      ] ;
+                  rdfs:subClassOf lib:User ;
+                  owl:disjointWith lib:AdministrativeStaff ,
+                                   lib:External ;
+                  owl:disjointUnionOf ( lib:AssistantProfessor
+                                        lib:AssociateProfessor
+                                        lib:Professor
+                                      ) ;
+                  owl:hasKey ( lib:pAcRegNo
+                             ) .
+
+
+###  http://example.org/library#AdministrativeStaff
+lib:AdministrativeStaff rdf:type owl:Class ;
+                        rdfs:subClassOf lib:Person ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty lib:pAddHasDirectSupervisor ;
+                                          owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                          owl:onClass lib:AdministrativeStaff
+                                        ] .
+
+
+###  http://example.org/library#AssistantProfessor
+lib:AssistantProfessor rdf:type owl:Class ;
+                       rdfs:subClassOf lib:AcademicStaff ,
+                                       lib:Author .
+
+
+###  http://example.org/library#AssociateProfessor
+lib:AssociateProfessor rdf:type owl:Class ;
+                       rdfs:subClassOf lib:AcademicStaff ,
+                                       lib:Author .
+
+
+###  http://example.org/library#Author
+lib:Author rdf:type owl:Class ;
+           rdfs:subClassOf lib:Person ;
+           owl:hasKey ( lib:pAuthorId
+                      ) .
+
+
+###  http://example.org/library#Book
+lib:Book rdf:type owl:Class ;
+         rdfs:subClassOf lib:Document .
+
+
+###  http://example.org/library#Copy
+lib:Copy rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty lib:isCopyOf ;
+                           owl:allValuesFrom lib:Document
+                         ] ;
+         owl:hasKey ( lib:cId
+                    ) .
+
+
+###  http://example.org/library#Department
+lib:Department rdf:type owl:Class .
+
+
+###  http://example.org/library#Document
+lib:Document rdf:type owl:Class ;
+             owl:hasKey ( lib:dIsbn
+                        ) .
+
+
+###  http://example.org/library#ExpensiveCopy
+lib:ExpensiveCopy rdf:type owl:Class ;
+                  rdfs:subClassOf lib:Copy .
+
+
+###  http://example.org/library#External
+lib:External rdf:type owl:Class ;
+             rdfs:subClassOf lib:AdministrativeStaff ,
+                             lib:User ;
+             owl:disjointWith lib:Student .
+
+
+###  http://example.org/library#Faculty
+lib:Faculty rdf:type owl:Class ;
+            rdfs:subClassOf lib:User .
+
+
+###  http://example.org/library#Gender
+lib:Gender rdf:type owl:Class .
+
+
+###  http://example.org/library#Loan
+lib:Loan rdf:type owl:Class ;
+         rdfs:subClassOf lib:Transaction .
+
+
+###  http://example.org/library#Man
+lib:Man rdf:type owl:Class ;
+        rdfs:subClassOf lib:Person .
+
+
+###  http://example.org/library#Paper
+lib:Paper rdf:type owl:Class ;
+          rdfs:subClassOf lib:Document .
+
+
+###  http://example.org/library#PeopleAtUni
+lib:PeopleAtUni rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Class ;
+                                      owl:unionOf ( lib:AcademicStaff
+                                                    lib:AdministrativeStaff
+                                                    lib:Student
+                                                  )
+                                    ] ;
+                rdfs:subClassOf lib:Person .
+
+
+###  http://example.org/library#Person
+lib:Person rdf:type owl:Class .
+
+
+###  http://example.org/library#PhdCandidate
+lib:PhdCandidate rdf:type owl:Class ;
+                 rdfs:subClassOf lib:Author ,
+                                 lib:Student .
+
+
+###  http://example.org/library#PostgraduateStudent
+lib:PostgraduateStudent rdf:type owl:Class ;
+                        rdfs:subClassOf lib:Student ;
+                        owl:disjointWith lib:UndergraduateStudent .
+
+
+###  http://example.org/library#Professor
+lib:Professor rdf:type owl:Class ;
+              rdfs:subClassOf lib:AcademicStaff ,
+                              lib:Author .
+
+
+###  http://example.org/library#Reservation
+lib:Reservation rdf:type owl:Class ;
+                rdfs:subClassOf lib:Transaction .
+
+
+###  http://example.org/library#Return
+lib:Return rdf:type owl:Class ;
+           rdfs:subClassOf lib:Transaction .
+
+
+###  http://example.org/library#Student
+lib:Student rdf:type owl:Class ;
+            owl:equivalentClass [ owl:intersectionOf ( lib:User
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty lib:pStudBelongToDept ;
+                                                         owl:someValuesFrom lib:Department
+                                                       ]
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ;
+            owl:hasKey ( lib:pStudRegNo
+                       ) .
+
+
+###  http://example.org/library#Transaction
+lib:Transaction rdf:type owl:Class .
+
+
+###  http://example.org/library#UndergraduateStudent
+lib:UndergraduateStudent rdf:type owl:Class ;
+                         rdfs:subClassOf lib:Student .
+
+
+###  http://example.org/library#User
+lib:User rdf:type owl:Class ;
+         rdfs:subClassOf lib:Person .
+
+
+###  http://example.org/library#Woman
+lib:Woman rdf:type owl:Class ;
+          rdfs:subClassOf lib:Person .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.org/library#A0001
+lib:A0001 rdf:type owl:NamedIndividual ,
+                   lib:Author ;
+          lib:pHasGender lib:male ;
+          lib:wrote lib:I1234567891234 ;
+          lib:pAuthorCountryOrigin "France" ;
+          lib:pAuthorDateOfDeath "1922-10-10"^^xsd:date ;
+          lib:pAuthorId 0001 ;
+          lib:pDateOfBirth "1887-10-10"^^xsd:date ;
+          lib:pFullName "Marcel Proust" .
+
+
+###  http://example.org/library#A0002
+lib:A0002 rdf:type owl:NamedIndividual ,
+                   lib:Author ;
+          lib:pHasGender lib:male ;
+          lib:pAuthorCountryOrigin "Greece" ;
+          lib:pAuthorId 0002 ;
+          lib:pDateOfBirth "1979-10-10"^^xsd:date ;
+          lib:pFullName "Aggelos Katsaggelos" .
+
+
+###  http://example.org/library#A0003
+lib:A0003 rdf:type owl:NamedIndividual ,
+                   lib:Author ;
+          lib:pHasGender lib:male ;
+          lib:pAuthorId 0003 ;
+          lib:pDateOfBirth "1951-10-10"^^xsd:date ;
+          lib:pFullName "Henry Jorth" ;
+          lib:wDateOfBirth "1951-10-10" .
+
+
+###  http://example.org/library#A0004
+lib:A0004 rdf:type owl:NamedIndividual ,
+                   lib:Author ;
+          lib:pHasGender lib:female ;
+          lib:pAuthorCountryOrigin "Greece" ;
+          lib:pAuthorId 0004 ;
+          lib:pDateOfBirth "1985-10-10"^^xsd:date ;
+          lib:pFullName "Katerina Adam" ;
+          lib:wDateOfBirth "1985-10-10" .
+
+
+###  http://example.org/library#C001
+lib:C001 rdf:type owl:NamedIndividual ,
+                  lib:Copy ;
+         lib:cId 001 ;
+         lib:cPrice 50 ;
+         lib:cPurDate "2011-05-05"^^xsd:date .
+
+
+###  http://example.org/library#C002
+lib:C002 rdf:type owl:NamedIndividual ,
+                  lib:Copy ;
+         lib:cId 002 ;
+         lib:cPrice 40 ;
+         lib:cPurDate "2012-12-10"^^xsd:date .
+
+
+###  http://example.org/library#C003
+lib:C003 rdf:type owl:NamedIndividual ,
+                  lib:Copy ;
+         lib:cId 003 .
+
+
+###  http://example.org/library#C004
+lib:C004 rdf:type owl:NamedIndividual ,
+                  lib:Copy ;
+         lib:cId 004 ;
+         lib:cPrice 10 ;
+         lib:cPurDate "2016-12-10"^^xsd:date .
+
+
+###  http://example.org/library#C005
+lib:C005 rdf:type owl:NamedIndividual ,
+                  lib:Copy ;
+         lib:cId 005 ;
+         lib:cPurDate "2017-10-12"^^xsd:date .
+
+
+###  http://example.org/library#C006
+lib:C006 rdf:type owl:NamedIndividual ,
+                  lib:Copy .
+
+
+###  http://example.org/library#C007
+lib:C007 rdf:type owl:NamedIndividual ,
+                  lib:Copy .
+
+
+###  http://example.org/library#C008
+lib:C008 rdf:type owl:NamedIndividual ,
+                  lib:Copy ;
+         lib:isCopyOf lib:P124902842080 ;
+         lib:cId 008 ;
+         lib:cPrice 5 ;
+         lib:cPurDate "2020-01-20"^^xsd:date .
+
+
+###  http://example.org/library#I1234567891234
+lib:I1234567891234 rdf:type owl:NamedIndividual ,
+                            lib:Book ;
+                   lib:hasCopy lib:C006 ,
+                               lib:C007 ;
+                   lib:dEdition 1 ;
+                   lib:dGenre "NOVEL" ;
+                   lib:dIsbn 1234567891234 ;
+                   lib:dNoPages 500 ;
+                   lib:dPubDate "1905-10-20"^^xsd:date ;
+                   lib:dTitle "IN SEARCH OF LOST TIME" .
+
+
+###  http://example.org/library#I1234567891235
+lib:I1234567891235 rdf:type owl:NamedIndividual ,
+                            lib:Book ;
+                   lib:hasCopy lib:C005 ;
+                   lib:dEdition 2 ;
+                   lib:dGenre "NOVEL" ;
+                   lib:dIsbn 1234567891235 ;
+                   lib:dNoPages 500 ;
+                   lib:dTitle "IN SEARCH OF LOST TIME 2" .
+
+
+###  http://example.org/library#I9781108480712
+lib:I9781108480712 rdf:type owl:NamedIndividual ,
+                            lib:Book ;
+                   lib:hasCopy lib:C001 ,
+                               lib:C002 ;
+                   lib:isWrittenBy lib:A0002 ;
+                   lib:dEdition 13 ;
+                   lib:dGenre "SCIENCE" ;
+                   lib:dIsbn 9781108480712 ;
+                   lib:dNoPages 593 ;
+                   lib:dTitle "MACHINE LEARNING REFINED" .
+
+
+###  http://example.org/library#I9781108485013
+lib:I9781108485013 rdf:type owl:NamedIndividual ,
+                            lib:Book ;
+                   lib:hasCopy lib:C004 ;
+                   lib:isWrittenBy lib:A0004 ;
+                   lib:dGenre "Science" ;
+                   lib:dIsbn 9781108485013 ;
+                   lib:dTitle "DATABASE SYSTEM CONCEPTS" .
+
+
+###  http://example.org/library#Loan001
+lib:Loan001 rdf:type owl:NamedIndividual ,
+                     lib:Loan ;
+            lib:transCopyLoaned lib:C001 ;
+            lib:transFromReserve lib:R0001 ;
+            lib:transIsLoanedBy lib:U0002 ;
+            lib:transRegisteredFrom lib:S001 .
+
+
+###  http://example.org/library#Loan002
+lib:Loan002 rdf:type owl:NamedIndividual ,
+                     lib:Loan ;
+            lib:transCopyLoaned lib:C003 ;
+            lib:transIsLoanedBy lib:S002 ;
+            lib:transRegisteredFrom lib:S002 ;
+            lib:transDate "2021-12-20"^^xsd:date ;
+            lib:transLoanUpToDate "2022-01-20"^^xsd:date .
+
+
+###  http://example.org/library#P124902842080
+lib:P124902842080 rdf:type owl:NamedIndividual ;
+                  lib:isWrittenBy lib:U0002 ;
+                  lib:dIsbn 124902842080 ;
+                  lib:dNoPages 12 ;
+                  lib:dPubDate "2019-12-29"^^xsd:date ;
+                  lib:dTitle "Knowledge extraction from Greek Legislation Documents" .
+
+
+###  http://example.org/library#P124902842089
+lib:P124902842089 rdf:type owl:NamedIndividual ,
+                           lib:Paper ;
+                  lib:hasCopy lib:C003 ;
+                  lib:isWrittenBy lib:A0002 ,
+                                  lib:S002 ;
+                  lib:dIsbn 124902842089 ;
+                  lib:dNoPages 13 ;
+                  lib:dPaperJournal "ML Conference" ;
+                  lib:dPubDate "2010-12-29"^^xsd:date ;
+                  lib:dTitle "TOP MACHINE LEARNING ALGORITHMS FOR CLASSIFICATION" .
+
+
+###  http://example.org/library#R0001
+lib:R0001 rdf:type owl:NamedIndividual ,
+                   lib:Reservation ;
+          lib:transCopyReserved lib:C001 ;
+          lib:transIsReservedBy lib:U0002 ;
+          lib:transRegisteredFrom lib:S001 ;
+          lib:transDate "2021-10-10"^^xsd:date ;
+          lib:transResUpToDate "2021-10-13"^^xsd:date .
+
+
+###  http://example.org/library#Return001
+lib:Return001 rdf:type owl:NamedIndividual ,
+                       lib:Return ;
+              lib:transFromLoan lib:Loan001 ;
+              lib:transRegisteredFrom lib:S002 ;
+              lib:transDate "2021-10-18"^^xsd:date .
+
+
+###  http://example.org/library#S001
+lib:S001 rdf:type owl:NamedIndividual ,
+                  lib:AdministrativeStaff ;
+         lib:pHasGender lib:female ;
+         lib:pFullName "Alexia Papadopoulou" .
+
+
+###  http://example.org/library#S002
+lib:S002 rdf:type owl:NamedIndividual ,
+                  lib:AdministrativeStaff ,
+                  lib:External ;
+         lib:pAddHasDirectSupervisor lib:S001 ;
+         lib:pHasGender lib:male ;
+         lib:pExtId 002 ;
+         lib:pFullName "Thomas Papadopoulos" .
+
+
+###  http://example.org/library#S003
+lib:S003 rdf:type owl:NamedIndividual ,
+                  lib:AdministrativeStaff ;
+         lib:pAddHasDirectSupervisor lib:S002 ;
+         lib:pHasGender lib:male ;
+         lib:pFullName "Giannis Amanatidis" .
+
+
+###  http://example.org/library#U0001
+lib:U0001 rdf:type owl:NamedIndividual ,
+                   lib:PostgraduateStudent ;
+          lib:pHasGender lib:male ;
+          lib:pStudBelongToDept lib:school_of_science ;
+          lib:pEmail "amichailidis@ihu.edu.gr" ;
+          lib:pFullName "Alex Michailidis" ;
+          lib:pStudRegNo "data9831" ;
+          lib:pTelNo 697615414892 .
+
+
+###  http://example.org/library#U0002
+lib:U0002 rdf:type owl:NamedIndividual ,
+                   lib:Author ,
+                   lib:PhdCandidate ,
+                   lib:UndergraduateStudent ;
+          lib:pHasGender lib:female ;
+          lib:pStudBelongToDept lib:school_of_humanities ,
+                                lib:school_of_science ;
+          lib:pAuthorId 1002 ;
+          lib:pFullName "Anna Karamatsouka" ;
+          lib:pStudRegNo "data3901825" ,
+                         "econ3901824" ;
+          lib:pTelNo 5209452 .
+
+
+###  http://example.org/library#U0003
+lib:U0003 rdf:type owl:NamedIndividual ,
+                   lib:Professor ;
+          lib:pAcWorkOnDept lib:school_of_science ;
+          lib:pHasGender lib:male ;
+          lib:pAcRegNo 321981123 ;
+          lib:pFullName "Ioannis Rizomyl" .
+
+
+###  http://example.org/library#U0004
+lib:U0004 rdf:type owl:NamedIndividual ,
+                   lib:AssociateProfessor ;
+          lib:pAcWorkOnDept lib:school_of_science ;
+          lib:pHasGender lib:female ;
+          lib:pAcRegNo 1927631 ;
+          lib:pFullName "Katerina Stourna" .
+
+
+###  http://example.org/library#U0005
+lib:U0005 rdf:type owl:NamedIndividual ,
+                   lib:AssistantProfessor ,
+                   lib:Author ;
+          lib:pAcWorkOnDept lib:school_of_humanities ;
+          lib:pHasGender lib:male ;
+          lib:pAcRegNo 63871206 ;
+          lib:pAuthorId 005 ;
+          lib:pFullName "Apostolos Giov" .
+
+
+###  http://example.org/library#U0006
+lib:U0006 rdf:type owl:NamedIndividual ,
+                   lib:External ;
+          lib:pHasGender lib:male ;
+          lib:pDateOfBirth "2000-10-10"^^xsd:date ;
+          lib:pEmail "imichailidis@gmail.com" ;
+          lib:pExtHasAddress "Agias Paraskeuis 3	" ;
+          lib:pExtId 0006 ;
+          lib:pFullName "Ilias Michailidis" ;
+          lib:pTelNo 6976153682 .
+
+
+###  http://example.org/library#U0007
+lib:U0007 rdf:type owl:NamedIndividual ;
+          lib:pAcWorkOnDept lib:school_of_humanities ;
+          lib:pAcRegNo 1209741907421 .
+
+
+###  http://example.org/library#U0008
+lib:U0008 rdf:type owl:NamedIndividual ;
+          lib:pStudBelongToDept lib:school_of_humanities .
+
+
+###  http://example.org/library#female
+lib:female rdf:type owl:NamedIndividual ,
+                    lib:Gender ;
+           owl:sameAs lib:woman .
+
+
+###  http://example.org/library#male
+lib:male rdf:type owl:NamedIndividual ,
+                  lib:Gender ;
+         owl:sameAs lib:man .
+
+
+###  http://example.org/library#man
+lib:man rdf:type owl:NamedIndividual ,
+                 lib:Gender .
+
+
+###  http://example.org/library#school_of_humanities
+lib:school_of_humanities rdf:type owl:NamedIndividual ,
+                                  lib:Department ;
+                         lib:dAddress "Campus1" .
+
+
+###  http://example.org/library#school_of_science
+lib:school_of_science rdf:type owl:NamedIndividual ,
+                               lib:Department ;
+                      lib:dAddress "Campus2" .
+
+
+###  http://example.org/library#woman
+lib:woman rdf:type owl:NamedIndividual ,
+                   lib:Gender .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( lib:Copy
+                lib:Department
+                lib:Document
+                lib:Gender
+                lib:Person
+                lib:Transaction
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( lib:Loan
+                lib:Reservation
+                lib:Return
+              )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( lib:A0001
+                        lib:A0002
+                        lib:A0003
+                        lib:A0004
+                        lib:S002
+                        lib:U0001
+                        lib:U0002
+                        lib:U0003
+                        lib:U0004
+                        lib:U0005
+                        lib:U0006
+                        lib:U0007
+                        lib:U0008
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( lib:S001
+                        lib:S002
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( lib:S001
+                        lib:S003
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( lib:S002
+                        lib:S003
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( lib:female
+                        lib:male
+                      )
+] .
+
+
+#################################################################
+#    Rules
+#################################################################
+
+lib:x rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+lib:d rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+lib:a rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+lib:c rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+lib:price rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+lib:p1 rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+lib:p2 rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+lib:m rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Woman"^^xsd:string ;
+   rdfs:label "S2"^^xsd:string ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:Person ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:m
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:pHasGender ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> lib:m ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> lib:female
+                                                                ] ;
+                                                      rdf:rest rdf:nil
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:Woman ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:m
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Man"^^xsd:string ;
+   rdfs:label "S1"^^xsd:string ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:Person ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:m
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:pHasGender ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> lib:m ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> lib:male
+                                                                ] ;
+                                                      rdf:rest rdf:nil
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:Man ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:m
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Working Address"^^xsd:string ;
+   rdfs:label "S4"^^xsd:string ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:AcademicStaff ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:x
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:pAcWorkOnDept ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> lib:x ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> lib:d
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:dAddress ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> lib:d ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> lib:a
+                                                                           ] ;
+                                                                 rdf:rest rdf:nil
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:cAcHasWorkingAddress ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> lib:a
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Cheap Copy"^^xsd:string ;
+   rdfs:label "S5"^^xsd:string ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:Copy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:c
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#BuiltinAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#builtin> <http://www.w3.org/2003/11/swrlb#greaterThan> ;
+                                                                  <http://www.w3.org/2003/11/swrl#arguments> [ rdf:type rdf:List ;
+                                                                                                               rdf:first lib:price ;
+                                                                                                               rdf:rest [ rdf:type rdf:List ;
+                                                                                                                          rdf:first 30 ;
+                                                                                                                          rdf:rest rdf:nil
+                                                                                                                        ]
+                                                                                                             ]
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:cPrice ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> lib:c ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> lib:price
+                                                                           ] ;
+                                                                 rdf:rest rdf:nil
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:ExpensiveCopy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:c
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Worked With"^^xsd:string ;
+   rdfs:label "S3"^^xsd:string ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> lib:Document ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:d
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:isWrittenBy ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> lib:d ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> lib:p1
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:isWrittenBy ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> lib:d ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> lib:p2
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> lib:p1 ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> lib:p2
+                                                                                      ] ;
+                                                                            rdf:rest rdf:nil
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> lib:workedWith ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> lib:p1 ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> lib:p2
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
